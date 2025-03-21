@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { cookies } from "next/headers"
-import * as tf from "@tensorflow/tfjs-node"
+import * as tf from "@tensorflow/tfjs"
 import sharp from "sharp"
 
 // This would be your actual model loading code
