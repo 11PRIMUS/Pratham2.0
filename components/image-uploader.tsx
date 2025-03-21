@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Upload, Loader2, AlertTriangle, CheckCircle } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { Toaster, toast } from "sonner"
+
 import { Progress } from "@/components/ui/progress"
 import AwarenessRibbon from "./awareness-ribbon"
 
@@ -26,7 +27,6 @@ export default function ImageUploader() {
     riskLevel: "low" | "medium" | "high"
     recommendations: string[]
   }>(null)
-  const { toast } = useToast()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -34,11 +34,7 @@ export default function ImageUploader() {
 
     // Check if file is an image
     if (!file.type.startsWith("image/")) {
-      toast({
-        title: "Invalid file type",
-        description: "Please upload an image file.",
-        variant: "destructive",
-      })
+      toast.error("Invalid file type. Please upload an image file.")
       return
     }
 
@@ -53,11 +49,7 @@ export default function ImageUploader() {
 
   const handleAnalyze = async () => {
     if (!selectedFile) {
-      toast({
-        title: "No image selected",
-        description: "Please upload an image to analyze.",
-        variant: "destructive",
-      })
+      toast.error("No image selected. Please upload an image to analyze.")
       return
     }
 
@@ -132,17 +124,9 @@ export default function ImageUploader() {
 
       setResult(mockResults[cancerType])
 
-      toast({
-        title: "Analysis complete",
-        description: "Your image has been analyzed successfully.",
-        variant: "default",
-      })
+      toast.success("Analysis complete. Your image has been analyzed successfully.")
     } catch (error) {
-      toast({
-        title: "Analysis failed",
-        description: "There was an error analyzing the image. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Analysis failed. There was an error analyzing the image. Please try again.")
     } finally {
       setIsAnalyzing(false)
     }
@@ -318,7 +302,7 @@ export default function ImageUploader() {
           )}
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }
-

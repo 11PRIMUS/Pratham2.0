@@ -8,7 +8,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Send, Loader2 } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { Toaster, toast } from "sonner"
+
 import ImageUploader from "@/components/image-uploader"
 import { useChat } from "ai/react"
 import AwarenessRibbon from "./awareness-ribbon"
@@ -18,7 +19,6 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [queryCount, setQueryCount] = useState(0)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { toast } = useToast()
 
   // In a real app, you would check if the user is logged in
   useEffect(() => {
@@ -76,11 +76,7 @@ export default function ChatInterface() {
       }
     },
     onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to send message. Please try again.")
     },
   })
 
@@ -94,11 +90,7 @@ export default function ChatInterface() {
     e.preventDefault()
 
     if (!isLoggedIn && queryCount >= 3) {
-      toast({
-        title: "Query limit reached",
-        description: "Please sign up to continue using the AI assistant.",
-        variant: "destructive",
-      })
+      toast.error("Query limit reached. Please sign up to continue using the AI assistant.")
       return
     }
 
@@ -168,7 +160,7 @@ export default function ChatInterface() {
           </TabsContent>
         </CardContent>
       </Tabs>
+      <Toaster />
     </Card>
   )
 }
-
